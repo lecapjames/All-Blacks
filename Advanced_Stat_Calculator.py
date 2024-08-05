@@ -4,6 +4,8 @@ import pandas as pd
 # Read in required dataframes
 per_80_df = pd.read_csv('C:/Users/olive/Documents/All Black Project/Per_80_Minute_Avg.csv')
 stat_totals_df = pd.read_csv('C:/Users/olive/Documents/All Black Project/Stat_Totals.csv')
+wins_df = pd.read_csv('C:/Users/olive/Documents/All Black Project/Wins_Data.csv')
+non_wins_df = pd.read_csv('C:/Users/olive/Documents/All Black Project/Non_Wins_Data.csv')
 
 per_80_df = per_80_df.drop(per_80_df.columns[0], axis=1)
 
@@ -24,19 +26,19 @@ filtered_player_list = stat_totals_df['Name'].tolist()
 filtered_df = per_80_df[per_80_df['Name'].isin(filtered_player_list)]
 
 # Assign weightings
-meters_w = 1
-linebreaks_w = 1
-db_w = 1
-offloads_w = 1
-tackle_rating_w = 1
-t_won_w = 1
-penalties_w = 1
-tries_w = 1
-try_assists_w = 1
-try_contributions_w = 1
-carry_rating_w = 1
-carries_w = 1
-t_lost = 1
+meters_w = 0.110723
+linebreaks_w = 0.027604
+db_w = 0.017675
+offloads_w = 0.037031
+tackle_rating_w = 0.032039
+t_won_w = 0.087411
+penalties_w = 0.031472
+tries_w = 0.191399
+try_assists_w = 0.082167
+try_contributions_w = 0.103932
+carry_rating_w = 0.031537
+carries_w = 0.031537
+t_lost = 0.024282
 
 # Calculate Tackle % and Tackle Rating for each player
 filtered_df["Tackle %"] = filtered_df['Tackles']/(filtered_df['Tackles'] + filtered_df['Missed Tackles'])
@@ -64,8 +66,8 @@ for column in ["Defensive Rating", "Offensive Rating"]:
     norm_df[column] = (filtered_df[column] - min_value) / (max_value - min_value)
 
 # Assign weightings
-offensive_w = 1
-defensive_w = 1
+offensive_w = 0.5
+defensive_w = 0.5
 
 # Calculate Player Rating
 filtered_df["Player Rating"] = 100 * (offensive_w * norm_df["Offensive Rating"] + defensive_w * norm_df["Defensive Rating"])
